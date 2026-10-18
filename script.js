@@ -121,30 +121,6 @@ const themes = [
   },
   {
     id: 16,
-    name: "Beach & Summer Holiday",
-    category: "nature",
-    tag: "Beach Set",
-    description: "Sandy beach floor, sun lounger, surfboard shelf, blue ocean waves backdrop, seashells & starfish.",
-    image: "images/beach_lounger.jpg"
-  },
-  {
-    id: 17,
-    name: "Beach Boat & Seashore",
-    category: "nature",
-    tag: "Beach Set",
-    description: "Blue fishing boat with shell & starfish decorations, sandy beach backdrop with ocean waves.",
-    image: "images/beach_boat.jpg"
-  },
-  {
-    id: 18,
-    name: "Boho Beach Van",
-    category: "nature",
-    tag: "Retro Beach",
-    description: "Retro VW floral van backdrop, sandy beach, white sun lounger, wooden scooter & coastal vibes.",
-    image: "images/boho_beach_van.jpg"
-  },
-  {
-    id: 19,
     name: "Sunflower Scooter Garden",
     category: "nature",
     tag: "Garden Set",
@@ -152,7 +128,7 @@ const themes = [
     image: "images/sunflower_scooter.jpg"
   },
   {
-    id: 20,
+    id: 17,
     name: "Sunflower Bench Garden",
     category: "nature",
     tag: "Garden Set",
@@ -160,12 +136,28 @@ const themes = [
     image: "images/sunflower_bench.jpg"
   },
   {
-    id: 21,
+    id: 18,
     name: "Apple Orchard Cottage",
     category: "nature",
     tag: "Nature Set",
     description: "Enchanting apple arch doorway backdrop, rustic wooden bench, apple baskets & lush green plants.",
     image: "images/apple_orchard_set.jpg"
+  },
+  {
+    id: 19,
+    name: "Gokulam Holy Calf Heritage",
+    category: "traditional",
+    tag: "Traditional",
+    description: "Pure South Indian heritage setting with handcrafted white sacred calf, silk traditional dhoti & auspicious props.",
+    image: "images/media_1792339386420.jpg"
+  },
+  {
+    id: 20,
+    name: "Floral Milk Bath & Blossom Tub",
+    category: "newborn",
+    tag: "Bath Special",
+    description: "Gentle warm milk bath in vintage ivory tub surrounded by fresh yellow & purple roses and baby-safe comforts.",
+    image: "images/media_1792339386440.jpg"
   }
 ];
 
@@ -188,6 +180,10 @@ function renderThemes() {
       <div class="theme-info">
         <h3>${theme.name}</h3>
         <p>${theme.description}</p>
+        <div class="theme-price-tag">
+          <span class="price-amount">₹5,999</span>
+          <span class="price-label">All-Inclusive • 4-Hour Session</span>
+        </div>
         <div class="theme-card-footer">
           <span class="view-theme-pill">Costumes & Props Included</span>
           <span class="book-action-btn">Book Theme →</span>
@@ -229,11 +225,11 @@ function openThemeModal(themeId) {
         <h2>${theme.name}</h2>
         <p>${theme.description}</p>
         <div class="modal-package-banner">
-          <span>Total Studio Package:</span>
-          <strong>₹5,999 (All Inclusive)</strong>
+          <span>Studio Session (4 Hours):</span>
+          <strong>₹5,999 All-Inclusive</strong>
         </div>
         <div class="modal-includes-box">
-          ✨ Premium Costumes, Authentic Props & 4K Studio Photography Included
+          ✨ 4 Hours Dedicated Studio Time • Premium Costumes, Authentic Props & 4K Studio Photography Included
         </div>
         <form id="booking-form">
           <div class="form-group">
@@ -249,19 +245,19 @@ function openThemeModal(themeId) {
             <input type="date" id="modal-date" required>
           </div>
           <div class="form-group">
-            <label>Preferred Time Slot</label>
+            <label>Preferred Time Slot (4-Hour Session)</label>
             <select id="modal-slot" required>
-              <option value="">Select a slot</option>
-              <option value="Morning (9:00 AM - 12:00 PM)">Morning (9:00 AM - 12:00 PM)</option>
-              <option value="Afternoon (1:00 PM - 4:00 PM)">Afternoon (1:00 PM - 4:00 PM)</option>
-              <option value="Evening (4:00 PM - 7:00 PM)">Evening (4:00 PM - 7:00 PM)</option>
+              <option value="">Select a 4-hour slot</option>
+              <option value="Morning (9:00 AM - 1:00 PM) • 4 Hours">Morning (9:00 AM - 1:00 PM) • 4 Hours</option>
+              <option value="Afternoon (1:30 PM - 5:30 PM) • 4 Hours">Afternoon (1:30 PM - 5:30 PM) • 4 Hours</option>
+              <option value="Evening (4:00 PM - 8:00 PM) • 4 Hours">Evening (4:00 PM - 8:00 PM) • 4 Hours</option>
             </select>
           </div>
           <div class="form-group">
             <label>Your WhatsApp / Contact Number</label>
             <input type="tel" id="modal-phone" placeholder="e.g. 8374335863" required>
           </div>
-          <button type="submit" class="submit-btn">Book Theme in ₹5,999 Package (WhatsApp)</button>
+          <button type="submit" class="submit-btn">Book 4-Hour Session on WhatsApp</button>
         </form>
         <div class="modal-location-footer">
           📍 Studio: SBI colony, Road No. 2, Beside Gangamma Temple, Madanapalle • 
@@ -307,8 +303,10 @@ function openThemeModal(themeId) {
     const phone = modal.querySelector('#modal-phone').value;
 
     const message = encodeURIComponent(
-      `Hi The Little Chapter Studio! I would like to book the Total Package (₹5,999) for:\n\n` +
+      `Hi The Little Chapter Studio! I would like to book a 4-hour studio session for:\n\n` +
       `• Theme: ${theme.name}\n` +
+      `• Duration: 4 Hours (All-Inclusive)\n` +
+      `• Price: ₹5,999\n` +
       `• Child Name: ${childName}\n` +
       `• Child Age: ${childAge}\n` +
       `• Preferred Date: ${date}\n` +
@@ -325,12 +323,237 @@ function openThemeModal(themeId) {
   setTimeout(() => modal.classList.add('show'), 10);
 }
 
+// ==========================================================================
+// Top Showcase Infinite Scrolling Gallery Controller
+// ==========================================================================
+let topGalleryInitialized = false;
+
+function initTopGallery() {
+  if (topGalleryInitialized) return;
+  const galleryViewport = document.getElementById('gallery-viewport');
+  const galleryTrack = document.getElementById('gallery-track');
+  const prevBtn = document.getElementById('gallery-prev');
+  const nextBtn = document.getElementById('gallery-next');
+  const pagination = document.getElementById('gallery-pagination');
+
+  if (!galleryViewport || !galleryTrack || !prevBtn || !nextBtn || !pagination) {
+    return;
+  }
+
+  topGalleryInitialized = true;
+
+  const originalSlides = Array.from(galleryTrack.querySelectorAll('.top-gallery-item'));
+  const totalSlides = originalSlides.length;
+  if (totalSlides === 0) return;
+
+  // Build Pagination Dots
+  pagination.innerHTML = '';
+  for (let i = 0; i < totalSlides; i++) {
+    const dot = document.createElement('button');
+    dot.className = `top-gallery-dot ${i === 0 ? 'active' : ''}`;
+    dot.setAttribute('role', 'tab');
+    dot.setAttribute('aria-label', `Go to slide ${i + 1}`);
+    dot.setAttribute('data-dot-index', i);
+    pagination.appendChild(dot);
+  }
+
+  // Clones for infinite seamless scrolling (6 clones before & after)
+  const cloneCount = Math.min(6, totalSlides);
+
+  // Prepend clones of the last cloneCount slides
+  for (let i = totalSlides - cloneCount; i < totalSlides; i++) {
+    const clone = originalSlides[i].cloneNode(true);
+    clone.classList.add('is-clone');
+    clone.setAttribute('aria-hidden', 'true');
+    galleryTrack.insertBefore(clone, galleryTrack.firstChild);
+  }
+
+  // Append clones of the first cloneCount slides
+  for (let i = 0; i < cloneCount; i++) {
+    const clone = originalSlides[i].cloneNode(true);
+    clone.classList.add('is-clone');
+    clone.setAttribute('aria-hidden', 'true');
+    galleryTrack.appendChild(clone);
+  }
+
+  let currentIndex = cloneCount;
+  let isTransitioning = false;
+
+  function getSlideMetrics() {
+    const firstSlide = galleryTrack.querySelector('.top-gallery-item');
+    if (!firstSlide) return { step: 0 };
+    const slideWidth = firstSlide.getBoundingClientRect().width;
+    const computed = window.getComputedStyle(galleryTrack);
+    const gap = parseFloat(computed.gap) || 18;
+    return { slideWidth, gap, step: slideWidth + gap };
+  }
+
+  function setPosition(animate = true) {
+    const { step } = getSlideMetrics();
+    const offset = currentIndex * step;
+    if (animate) {
+      galleryTrack.style.transition = 'transform 0.38s cubic-bezier(0.25, 1, 0.5, 1)';
+    } else {
+      galleryTrack.style.transition = 'none';
+    }
+    galleryTrack.style.transform = `translate3d(-${offset}px, 0, 0)`;
+  }
+
+  function updateDots() {
+    let activeIndex = (currentIndex - cloneCount) % totalSlides;
+    if (activeIndex < 0) activeIndex += totalSlides;
+    const dots = pagination.querySelectorAll('.top-gallery-dot');
+    dots.forEach((dot, idx) => {
+      if (idx === activeIndex) {
+        dot.classList.add('active');
+        dot.setAttribute('aria-selected', 'true');
+      } else {
+        dot.classList.remove('active');
+        dot.setAttribute('aria-selected', 'false');
+      }
+    });
+  }
+
+  galleryTrack.addEventListener('transitionend', (e) => {
+    if (e.target !== galleryTrack) return;
+    isTransitioning = false;
+
+    if (currentIndex >= totalSlides + cloneCount) {
+      currentIndex = currentIndex - totalSlides;
+      setPosition(false);
+    } else if (currentIndex < cloneCount) {
+      currentIndex = currentIndex + totalSlides;
+      setPosition(false);
+    }
+    updateDots();
+  });
+
+  function nextSlide() {
+    if (isTransitioning) return;
+    isTransitioning = true;
+    currentIndex++;
+    setPosition(true);
+    updateDots();
+    setTimeout(() => {
+      isTransitioning = false;
+    }, 400);
+  }
+
+  function prevSlide() {
+    if (isTransitioning) return;
+    isTransitioning = true;
+    currentIndex--;
+    setPosition(true);
+    updateDots();
+    setTimeout(() => {
+      isTransitioning = false;
+    }, 400);
+  }
+
+  nextBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    nextSlide();
+    startAutoplay();
+  });
+
+  prevBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    prevSlide();
+    startAutoplay();
+  });
+
+  pagination.addEventListener('click', (e) => {
+    const dot = e.target.closest('.top-gallery-dot');
+    if (!dot) return;
+    const targetIdx = parseInt(dot.getAttribute('data-dot-index'), 10);
+    if (isNaN(targetIdx)) return;
+    isTransitioning = true;
+    currentIndex = cloneCount + targetIdx;
+    setPosition(true);
+    updateDots();
+    startAutoplay();
+  });
+
+  // Automatic Rotation (Autoplay) - Continuously rotates
+  let autoplayTimer = null;
+  const AUTOPLAY_INTERVAL = 1500;
+
+  function startAutoplay() {
+    if (autoplayTimer) clearInterval(autoplayTimer);
+    autoplayTimer = setInterval(() => {
+      nextSlide();
+    }, AUTOPLAY_INTERVAL);
+  }
+
+  function stopAutoplay() {
+    if (autoplayTimer) {
+      clearInterval(autoplayTimer);
+      autoplayTimer = null;
+    }
+  }
+
+  // Touch Swipe Support
+  let touchStartX = 0;
+  let touchDeltaX = 0;
+  galleryViewport.addEventListener('touchstart', (e) => {
+    touchStartX = e.touches[0].clientX;
+    touchDeltaX = 0;
+    stopAutoplay();
+  }, { passive: true });
+
+  galleryViewport.addEventListener('touchmove', (e) => {
+    touchDeltaX = e.touches[0].clientX - touchStartX;
+  }, { passive: true });
+
+  galleryViewport.addEventListener('touchend', () => {
+    if (Math.abs(touchDeltaX) > 40) {
+      if (touchDeltaX < 0) {
+        nextSlide();
+      } else {
+        prevSlide();
+      }
+    }
+    startAutoplay();
+  });
+
+  // Handle Resize
+  let resizeTimer;
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(() => {
+      setPosition(false);
+    }, 100);
+  });
+
+  // Page visibility
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) {
+      stopAutoplay();
+    } else {
+      startAutoplay();
+    }
+  });
+
+  // Initial setup & start rotating immediately
+  setPosition(false);
+  updateDots();
+  startAutoplay();
+
+  requestAnimationFrame(() => {
+    setPosition(false);
+    updateDots();
+    startAutoplay();
+  });
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   renderThemes();
   initCategoryFilters();
+  initTopGallery();
 });
 
 if (document.readyState === 'interactive' || document.readyState === 'complete') {
   renderThemes();
   initCategoryFilters();
+  initTopGallery();
 }
